@@ -1,0 +1,102 @@
+
+#기초 패키지 설치
+apt -y install gcc g++ default-jdk mysql-server apache2 mandoc sqlite3 rdate rename tree mailutils lynx tomcat9 glibc-doc quota sendmail mailutil
+
+#php관련 패키지 설치
+apt -y install php php-curl php-gd php-intl php-mbstring php-soap php-xml php-xmlrpc php-zip php-mysql
+
+
+#유저 생성
+#for i in `seq 40`
+#do	
+#	useradd k$i
+#	passwd k$i
+#done
+
+#alias 생성
+cat > ~/.bash_aliases << A
+alias h='history'
+alias l='ls -AlF'
+alias c='clear'
+alias cp='cp -i'
+alias mv='mv -i'
+alias df='df -h'
+alias du='du -sh'
+alias li='ls -Ali'
+alias lh='ls -Alh'
+
+
+##root only
+alias ai='apt -y install'
+alias aq='apt list --installed | grep '
+alias ac='apt list --installed | wc -l'
+
+alias pq='ps -ef | grep'
+alias sss='systemctl start '
+alias ses='systemctl restart'
+alias uq='tail -7 /etc/passwd && ls /home'
+
+A
+
+
+. ~/.profile
+
+# 아래의 명령어는 쉘에서 실행하는 것으로, ~/.vimrc 파일을 생성하고 내용을 입력합니다.
+
+# se nu ai ci si ts=4 sw=4 ruler title showmatch : Vim 설정 옵션으로, line number(줄번호), auto indent(자동 들여# 쓰기), smart #case(대소문자 구분), smart indent(인덴트 자동 설정), tabstop(탭 #문자 간격), shiftwidth(들여쓰기 간# 격), ruler(화면 하단에 커서 #위치 정보 표시), title(터미널 제목 표시), showmatch(괄호 매칭 표시) 등을 설정합니다.
+
+# syntax on : Vim 문법 강조 기능을 활성화합니다.
+
+# hi comment ctermfg=red : comment(주석) 키워드에 대한 하이라이팅을 설정합니다. 여기서는 ctermfg 옵션을 사용하여 글자색을 빨간색으로 지정합니다.
+
+cat > ~/.vimrc << A
+se nu ai ci si ts=4 sw=4 ruler title showmatch
+syntax on
+hi comment ctermfg=red
+A
+
+
+. ~/.vimrc
+
+
+echo "PATH=$PATH:." >> ~/.profile
+
+chmod +x my_start_init.sh
+
+
+#user 생성시 필요 옵션
+
+cat >> /etc/login.defs << A
+CREATE_HOME yes
+A
+
+useradd -D -s /bin/bash
+cd /etc/skel/ && mkdir /etc/skel/public_html 
+
+#alias 생성
+touch bash_alises 
+cat >> /etc/skel/bash_alises << A
+alias h='history'
+alias l='ls -AlF'
+alias c='clear'
+alias cp='cp -i'
+alias mv='mv -i'
+alias df='df -h'
+alias du='du -sh'
+alias li='ls -Ali'
+alias lh='ls -Alh'
+A
+
+
+source ~/.profile
+
+
+#mysql 계정 만들기
+# alter user 'root'@'localhost' identified with mysql_native_password by 'jj';
+# flush privileges;
+# create user ilil@localhost identified with mysql_native_password by 'jj';
+# grant all privileges on ilDB.* to ilil@localhost;
+
+# flush privileges;
+
+
